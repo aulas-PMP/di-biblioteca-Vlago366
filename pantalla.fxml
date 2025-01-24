@@ -22,7 +22,7 @@
         </MenuBar>
 
         <!-- Título del archivo -->
-        <Label text="Seleccione un archivo para reproducir" />
+        <Label fx:id="tituloArchivo" text="Seleccione un archivo para reproducir" />
 
         <!-- Contenido principal -->
         <BorderPane VBox.vgrow="ALWAYS">
@@ -49,6 +49,7 @@
                 <VBox prefWidth="150" id="biblioteca">
                     <children>
                         <Label text="Biblioteca" alignment="CENTER" />
+                        <ListView fx:id="listaArchivos" />
                     </children>
                 </VBox>
             </right>
@@ -57,9 +58,9 @@
             <bottom>
                 <HBox spacing="10" alignment="CENTER" id="controles-inferiores">
                     <children>
-                        <Button text="Play" />
-                        <Button text="Pause" />
-                        <Button text="Stop" />
+                        <Button fx:id="Play" text="Play" />
+                        <Button fx:id="Pause" text="Pause" />
+                        <Button fx:id="Stop" text="Stop" />
                         <Slider fx:id="barraProgreso" min="0" max="1" value="0" HBox.hgrow="ALWAYS" />
                         <Label fx:id="tiempoReproduccion" text="0:00 / 0:00" />
                     </children>
