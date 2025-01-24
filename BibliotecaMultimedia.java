@@ -47,11 +47,11 @@ public class BibliotecaMultimedia extends Application {
         establecerCarpetaPorDefecto(rutaCarpeta);
 
         // Configuración de botones
-        //Button btnPlay = (Button) root.lookup("#Play");
-        //Button btnPause = (Button) root.lookup("#Pause");
-        //Button btnStop = (Button) root.lookup("#Stop");
+        Button btnPlay = (Button) root.lookup("#Play");
+        Button btnPause = (Button) root.lookup("#Pause");
+        Button btnStop = (Button) root.lookup("#Stop");
 
-        /**btnPlay.setOnAction(e -> {
+        btnPlay.setOnAction(e -> {
             if (mediaPlayer != null) {
                 mediaPlayer.play();
             }
@@ -67,16 +67,16 @@ public class BibliotecaMultimedia extends Application {
             if (mediaPlayer != null) {
                 mediaPlayer.stop();
             }
-        });*/
+        });
 
         // Acción al seleccionar un archivo de la biblioteca
-        /**listaArchivos.setOnMouseClicked(e -> {
+        listaArchivos.setOnMouseClicked(e -> {
             String archivoSeleccionado = listaArchivos.getSelectionModel().getSelectedItem();
             if (archivoSeleccionado != null) {
                 File archivo = new File(rutaCarpeta, archivoSeleccionado);
                 cargarArchivo(archivo);
             }
-        });*/
+        });
 
         // Crear la escena
         Scene scene = new Scene(root, 800, 600);
