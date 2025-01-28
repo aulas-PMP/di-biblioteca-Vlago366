@@ -10,6 +10,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -78,6 +79,11 @@ public class BibliotecaMultimedia extends Application {
                 cargarArchivo(archivo);
             }
         });
+
+        // Ajustar el MediaView al espacio disponible en su contenedor
+        mediaView.fitWidthProperty().bind(((StackPane) mediaView.getParent()).widthProperty());
+        mediaView.fitHeightProperty().bind(((StackPane) mediaView.getParent()).heightProperty());
+        mediaView.setPreserveRatio(true);
 
         // Crear la escena
         Scene scene = new Scene(root, 800, 600);
