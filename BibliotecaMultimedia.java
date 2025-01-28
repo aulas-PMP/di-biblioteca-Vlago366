@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
@@ -82,7 +83,7 @@ public class BibliotecaMultimedia extends Application {
         Scene scene = new Scene(root, 800, 600);
 
         // Agregar el CSS a la escena
-        URL cssURL = getClass().getResource("@styles.css");
+        URL cssURL = getClass().getResource("styles.css");
         if (cssURL != null) {
             scene.getStylesheets().add(cssURL.toExternalForm());
         }
@@ -97,36 +98,60 @@ public class BibliotecaMultimedia extends Application {
             mediaPlayer.stop();
             mediaPlayer.dispose();
         }
-
-        // Configurar Media y MediaPlayer
-        Media media = new Media(archivo.toURI().toString());
-        mediaPlayer = new MediaPlayer(media);
-
-        barraProgreso.setValue(0);
-
-        mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
-            barraProgreso.setValue(newTime.toSeconds() / mediaPlayer.getTotalDuration().toSeconds());
-            tiempoReproduccion.setText(
-                formatTime(newTime) + " / " + formatTime(mediaPlayer.getTotalDuration())
-            );
-        });
-
-        barraProgreso.setOnMouseClicked(e -> {
-            if (mediaPlayer != null) {
-                double newTime = barraProgreso.getValue() * mediaPlayer.getTotalDuration().toSeconds();
-                mediaPlayer.seek(Duration.seconds(newTime));
-            }
-        });
-
-        // Mostrar título del archivo
-        tituloArchivo.setText("Reproduciendo: " + archivo.getName());
-
-        // Mostrar contenido multimedia en MediaView
-        mediaView.setMediaPlayer(mediaPlayer);
-
-        // Reproducir el video
-        mediaPlayer.play();
+    
+        try {
+            // Configurar Media y MediaPlayer
+            Media media = new Media(archivo.toURI().toString());
+            mediaPlayer = new MediaPlayer(media);
+    
+            barraProgreso.setValue(0);
+    
+            mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
+                if (mediaPlayer.getTotalDuration() != null) {
+                    barraProgreso.setValue(newTime.toSeconds() / mediaPlayer.getTotalDuration().toSeconds());
+                    tiempoReproduccion.setText(
+                        formatTime(newTime) + " / " + formatTime(mediaPlayer.getTotalDuration())
+                    );
+                }
+            });
+    
+            barraProgreso.setOnMouseClicked(e -> {
+                if (mediaPlayer != null) {
+                    double newTime = barraProgreso.getValue() * mediaPlayer.getTotalDuration().toSeconds();
+                    mediaPlayer.seek(Duration.seconds(newTime));
+                }
+            });
+    
+            // Mostrar título del archivo
+            tituloArchivo.setText("Reproduciendo: " + archivo.getName());
+    
+            // Configurar MediaView para mostrar el video
+            mediaView.setMediaPlayer(mediaPlayer);
+    
+            // Escuchar errores en la reproducción
+            mediaPlayer.setOnError(() -> {
+                System.out.println("Error al reproducir el archivo: " + mediaPlayer.getError().getMessage());
+            });
+    
+            mediaPlayer.setOnReady(() -> {
+                // Verificar que el archivo contiene video
+                if (media.getWidth() > 0 && media.getHeight() > 0) {
+                    mediaView.setFitWidth(media.getWidth());
+                    mediaView.setFitHeight(media.getHeight());
+                    mediaView.setPreserveRatio(true);
+                } else {
+                    System.out.println("El archivo no contiene video.");
+                }
+            });
+    
+            // Reproducir el contenido multimedia
+            mediaPlayer.play();
+        } catch (Exception e) {
+            System.out.println("Error al cargar el archivo multimedia: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
+    
 
     private void establecerCarpetaPorDefecto(String rutaCarpeta) {
         File carpeta = new File(rutaCarpeta);
