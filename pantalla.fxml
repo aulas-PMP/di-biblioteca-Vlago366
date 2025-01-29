@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.media.MediaView?>
 
-<VBox xmlns="http://javafx.com/javafx/21.0.5" xmlns:fx="http://javafx.com/fxml/1" prefWidth="800" prefHeight="600">
+<VBox xmlns="http://javafx.com/javafx/21.0.5" xmlns:fx="http://javafx.com/fxml/1" prefWidth="1200" prefHeight="600">
     <!-- Menú superior -->
     <children>
         <MenuBar>
@@ -27,13 +27,17 @@
         <!-- Contenido principal -->
         <BorderPane VBox.vgrow="ALWAYS">
             <!-- Panel izquierdo: Editor de vídeo -->
-            <left>
-                <VBox prefWidth="150" id="editor-video">
-                    <children>
-                        <Label text="Editor de Video" alignment="CENTER" />
-                    </children>
-                </VBox>
-            </left>
+            <!-- Panel izquierdo: Editor de vídeo -->
+        <left>
+            <VBox prefWidth="250" id="editor-video" style="-fx-background-color: #34495E; -fx-padding: 10px;">
+                <children>
+                    <Label text="Editor de Video" alignment="CENTER" style="-fx-text-fill: white; -fx-font-weight: bold;" />
+                    <Button fx:id="btnAumentarVelocidad" text="➕ Aumentar Velocidad" />
+                    <Button fx:id="btnReducirVelocidad" text="➖ Reducir Velocidad" />
+                </children>
+            </VBox>
+        </left>
+
 
             <!-- Panel central: Reproductor multimedia -->
             <center>
@@ -46,7 +50,7 @@
 
             <!-- Panel derecho: Biblioteca -->
             <right>
-                <VBox prefWidth="150" id="biblioteca">
+                <VBox prefWidth="250" id="biblioteca">
                     <children>
                         <Label text="Biblioteca" alignment="CENTER" />
                         <ListView fx:id="listaArchivos" />
