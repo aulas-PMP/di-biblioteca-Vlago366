@@ -8,10 +8,10 @@
 /* Barra de menú */
 .menu-bar {
     -fx-background-color: #817e7e;
-    -fx-text-fill: white;
+    -fx-text-fill: rgb(0, 0, 0);
 }
 .menu {
-    -fx-text-fill: white;
+    -fx-text-fill: rgb(94, 94, 94);
     -fx-font-size: 14px;
 }
 .menu-item {
@@ -40,22 +40,36 @@
 }
 
 /* Panel de edición */
-.editor-video {
-    -fx-background-color: #ececec; /* Gris claro */
-    -fx-border-color: #ccc;
-    -fx-border-width: 1px;
-    -fx-padding: 10px;
+#editor-video {
+    -fx-background-color: #4e4d49; /* Gris claro */
+    -fx-border-color: #4e4d49;
 }
-.editor-video .button {
-    -fx-background-color: #FF0000; /* Rojo */
+
+#editor-video:hover {
+    -fx-background-color: #4e4d49; /* Gris claro */
+    -fx-border-color: #000000;
+    padding: 10px;
+}
+
+
+#editor-video .button:hover {
+    -fx-background-color: #67eeaa; /* verde más claro cuando el ratón pasa por encima */
+}
+
+/* Botones de velocidad */
+#btnAumentarVelocidad, #btnReducirVelocidad {
+    -fx-background-color: #0cc075; /* verde */
     -fx-text-fill: white;
+    -fx-min-width: 150px;
+    -fx-border-radius: 30px; /* Bordes redondeados */
+    -fx-padding: 5px 10px;
+    margin-bottom: 100px;
     -fx-font-size: 14px;
-    -fx-border-radius: 15px; /* Bordes redondeados */
-    -fx-background-radius: 15px; /* Bordes redondeados */
-    -fx-padding: 10px 20px; /* Aumentar el padding para hacer el botón más grande */
 }
-.editor-video .button:hover {
-    -fx-background-color: #e60000; /* Rojo más oscuro cuando el ratón pasa por encima */
+
+/* Contenedor de los botones */
+#editor-video > Button {
+    -fx-margin: 10px 20px;
 }
 
 /* Panel de biblioteca */
@@ -83,6 +97,7 @@
 }
 .hbox .button {
     -fx-background-color: #FF0000; /* Rojo */
+    margin-top: 10px;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-border-radius: 15px; /* Bordes redondeados */
