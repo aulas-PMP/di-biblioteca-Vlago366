@@ -12,10 +12,31 @@
     -fx-background-color: #000000;
     -fx-text-fill: rgb(255, 255, 255);
 }
-#menuBiblioteca, #menuEditorVideo, #menuAbrir, #menuAcercaDe {
-    -fx-text-fill: rgb(255, 255, 255);
+/* Estilo para el menú principal */
+#menu {
     -fx-background-color: #000000;
 }
+
+/* Estilo para los elementos del menú */
+#menuBiblioteca, #menuEditorVideo, #menuAbrir, #menuAcercaDe, #seleccionarCarpeta {
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-background-color: #000000;
+    -fx-border-color: #000000;
+}
+
+/* Estilo para los submenús (el borde del submenú) */
+.MenuItem {
+    -fx-background-color: #000000;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #000000;
+}
+
+/* Asegúrate de que el borde del submenú no quede blanco al pasar el ratón */
+.MenuItem:hover {
+    -fx-background-color: #333333;
+    -fx-border-color: #000000;
+}
+
 
 #sliderVolumen {
     -fx-background-color: #4e4d49;

@@ -12,6 +12,9 @@
                 <Menu text="Archivo" fx:id="menu">
                     <MenuItem text="Abrir" fx:id="menuAbrir" />
                 </Menu>
+                <Menu text="Biblioteca" fx:id="menuBibliotecario">
+                    <MenuItem text="Selecionar carpeta" fx:id="seleccionarCarpeta" />
+                </Menu>
                 <Menu text="Ver">
                     <MenuItem text="Mostrar/Ocultar Biblioteca" fx:id="menuBiblioteca" />
                     <MenuItem text="Mostrar/Ocultar Editor de Video" fx:id="menuEditorVideo" />

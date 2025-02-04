@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.media.*;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -26,96 +27,97 @@ public class BibliotecaMultimedia extends Application {
     private VBox editorVideo, biblioteca;
     private StackPane stackPane;
 
-    @FXML private MenuItem menuAbrir, menuBiblioteca, menuEditorVideo, menuAcercaDe;
+    @FXML private MenuItem menuAbrir, menuBiblioteca, menuEditorVideo, menuAcercaDe, seleccionarCarpeta;
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Biblioteca Multimedia");
+public void start(Stage primaryStage) throws Exception {
+    primaryStage.setTitle("Biblioteca Multimedia");
 
-        // Cargar el archivo FXML
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("pantalla.fxml"));
-        loader.setController(this);
-        Parent root = loader.load();
+    // Cargar el archivo FXML
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("pantalla.fxml"));
+    loader.setController(this);
+    Parent root = loader.load();
 
-        // Obtener los controles del archivo FXML
-        tituloArchivo = (Label) root.lookup("#tituloArchivo");
-        mediaView = (MediaView) root.lookup("#mediaView");
-        barraProgreso = (Slider) root.lookup("#barraProgreso");
-        sliderVolumen = (Slider) root.lookup("#sliderVolumen");
-        tiempoReproduccion = (Label) root.lookup("#tiempoReproduccion");
-        listaArchivos = (ListView<String>) root.lookup("#listaArchivos");
-        btnAumentarVelocidad = (Button) root.lookup("#btnAumentarVelocidad");
-        btnReducirVelocidad = (Button) root.lookup("#btnReducirVelocidad");
-        stackPane = (StackPane) root.lookup("#stackPane");
-        btnAmpliarVideo = (Button) root.lookup("#btnAmpliarVideo");
-        btnReducirVideo = (Button) root.lookup("#btnReducirVideo");
-        mediaView.setPreserveRatio(false);
+    // Obtener los controles del archivo FXML
+    tituloArchivo = (Label) root.lookup("#tituloArchivo");
+    mediaView = (MediaView) root.lookup("#mediaView");
+    barraProgreso = (Slider) root.lookup("#barraProgreso");
+    sliderVolumen = (Slider) root.lookup("#sliderVolumen");
+    tiempoReproduccion = (Label) root.lookup("#tiempoReproduccion");
+    listaArchivos = (ListView<String>) root.lookup("#listaArchivos");
+    btnAumentarVelocidad = (Button) root.lookup("#btnAumentarVelocidad");
+    btnReducirVelocidad = (Button) root.lookup("#btnReducirVelocidad");
+    stackPane = (StackPane) root.lookup("#stackPane");
+    btnAmpliarVideo = (Button) root.lookup("#btnAmpliarVideo");
+    btnReducirVideo = (Button) root.lookup("#btnReducirVideo");
+    mediaView.setPreserveRatio(false);
 
-        editorVideo = (VBox) root.lookup("#editor-video");
-        biblioteca = (VBox) root.lookup("#biblioteca");
+    editorVideo = (VBox) root.lookup("#editor-video");
+    biblioteca = (VBox) root.lookup("#biblioteca");
 
-        btnAmpliarVideo.setOnAction(e -> ajustarTamañoVideo(1.2));
-        btnReducirVideo.setOnAction(e -> ajustarTamañoVideo(0.8));
+    btnAmpliarVideo.setOnAction(e -> ajustarTamañoVideo(1.2));
+    btnReducirVideo.setOnAction(e -> ajustarTamañoVideo(0.8));
 
-        // Configuración del menú
-        menuAbrir.setOnAction(e -> abrirArchivo());
-        menuBiblioteca.setOnAction(e -> togglePanel(biblioteca));
-        menuEditorVideo.setOnAction(e -> togglePanel(editorVideo));
-        menuAcercaDe.setOnAction(e -> mostrarAcercaDe());
+    // Configuración del menú
+    menuAbrir.setOnAction(e -> abrirArchivo());
+    seleccionarCarpeta.setOnAction(e -> selectCarpet());
+    menuBiblioteca.setOnAction(e -> togglePanel(biblioteca));
+    menuEditorVideo.setOnAction(e -> togglePanel(editorVideo));
+    menuAcercaDe.setOnAction(e -> mostrarAcercaDe());
 
-        // Configuración de botones de reproducción
-        Button btnPlay = (Button) root.lookup("#Play");
-        Button btnPause = (Button) root.lookup("#Pause");
-        Button btnStop = (Button) root.lookup("#Stop");
+    // Configuración de botones de reproducción
+    Button btnPlay = (Button) root.lookup("#Play");
+    Button btnPause = (Button) root.lookup("#Pause");
+    Button btnStop = (Button) root.lookup("#Stop");
 
-        btnPlay.setOnAction(e -> {
-            if (mediaPlayer != null) mediaPlayer.play();
-        });
+    btnPlay.setOnAction(e -> {
+        if (mediaPlayer != null) mediaPlayer.play();
+    });
 
-        btnPause.setOnAction(e -> {
-            if (mediaPlayer != null) mediaPlayer.pause();
-        });
+    btnPause.setOnAction(e -> {
+        if (mediaPlayer != null) mediaPlayer.pause();
+    });
 
-        btnStop.setOnAction(e -> {
-            if (mediaPlayer != null) mediaPlayer.stop();
-        });
+    btnStop.setOnAction(e -> {
+        if (mediaPlayer != null) mediaPlayer.stop();
+    });
 
-        btnAumentarVelocidad.setOnAction(e -> cambiarVelocidad(0.5));
-        btnReducirVelocidad.setOnAction(e -> cambiarVelocidad(-0.5));
+    btnAumentarVelocidad.setOnAction(e -> cambiarVelocidad(0.5));
+    btnReducirVelocidad.setOnAction(e -> cambiarVelocidad(-0.5));
 
-        // Cargar la lista de archivos de la carpeta Multimedia por defecto
-        cargarArchivosDeBiblioteca();
+    // Cargar la lista de archivos de la carpeta Multimedia por defecto
+    cargarArchivosDeBiblioteca();
 
-        // Acción al seleccionar un archivo de la biblioteca
-        listaArchivos.setOnMouseClicked(e -> {
-            String archivoSeleccionado = listaArchivos.getSelectionModel().getSelectedItem();
-            if (archivoSeleccionado != null) {
-                File archivo = new File("Multimedia", archivoSeleccionado);
-                cargarArchivo(archivo);
-            }
-        });
-
-        // Configurar el control de volumen con el slider
-        sliderVolumen.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if (mediaPlayer != null) {
-                mediaPlayer.setVolume(newVal.doubleValue());
-            }
-        });
-
-        Scene scene = new Scene(root, 1200, 600);
-
-        URL cssURL = getClass().getResource("styles.css");
-        if (cssURL != null) {
-            scene.getStylesheets().add(cssURL.toExternalForm());
+    // Acción al seleccionar un archivo de la biblioteca
+    listaArchivos.setOnMouseClicked(e -> {
+        String archivoSeleccionado = listaArchivos.getSelectionModel().getSelectedItem();
+        if (archivoSeleccionado != null) {
+            File archivo = new File("Multimedia", archivoSeleccionado);
+            cargarArchivo(archivo);
         }
+    });
 
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    // Configurar el control de volumen con el slider
+    sliderVolumen.valueProperty().addListener((obs, oldVal, newVal) -> {
+        if (mediaPlayer != null) {
+            mediaPlayer.setVolume(newVal.doubleValue());
+        }
+    });
+
+    Scene scene = new Scene(root, 1200, 600);
+
+    URL cssURL = getClass().getResource("styles.css");
+    if (cssURL != null) {
+        scene.getStylesheets().add(cssURL.toExternalForm());
     }
+
+    primaryStage.setScene(scene);
+    primaryStage.show();
+}
 
     private void togglePanel(VBox panel) {
         if (panel.isVisible()) {
@@ -234,6 +236,41 @@ public class BibliotecaMultimedia extends Application {
             }
         } catch (Exception e) {
             mostrarError("Error al cargar el archivo: " + e.getMessage());
+        }
+    }
+
+    private void selectCarpet() {
+        // Crear un selector de carpetas
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Seleccionar Carpeta Multimedia");
+
+        // Abrir el selector de carpetas y obtener la carpeta seleccionada
+        File carpetaSeleccionada = directoryChooser.showDialog(null);
+        if (carpetaSeleccionada != null) {
+            // Actualizar la carpeta base de multimedia
+            File carpetaMultimedia = new File(carpetaSeleccionada.getAbsolutePath());
+            
+            // Verificar si la carpeta existe y es válida
+            if (carpetaMultimedia.exists() && carpetaMultimedia.isDirectory()) {
+                // Establecer la nueva ruta de la carpeta Multimedia
+                cargarArchivosDeBiblioteca(carpetaMultimedia); // Pasamos la nueva carpeta
+            } else {
+                mostrarError("La carpeta seleccionada no es válida.");
+            }
+        }
+    }
+
+    private void cargarArchivosDeBiblioteca(File carpetaMultimedia) {
+        listaArchivos.getItems().clear(); // Limpiar la lista existente
+        if (carpetaMultimedia.exists() && carpetaMultimedia.isDirectory()) {
+            File[] archivos = carpetaMultimedia.listFiles((dir, name) -> name.endsWith(".mp4") || name.endsWith(".mp3") || name.endsWith(".wav"));
+            if (archivos != null) {
+                for (File archivo : archivos) {
+                    listaArchivos.getItems().add(archivo.getName());
+                }
+            }
+        } else {
+            mostrarError("La carpeta 'Multimedia' no existe o no es accesible.");
         }
     }
 
