@@ -4,25 +4,36 @@
 .root {
     -fx-background-color: #2B2B2B; /* Gris oscuro */
 }
-
+#menu{
+    -fx-background-color: #000000;
+}
 /* Barra de menú */
-.menu-bar {
-    -fx-background-color: #817e7e;
-    -fx-text-fill: rgb(0, 0, 0);
+#menuBar {
+    -fx-background-color: #000000;
+    -fx-text-fill: rgb(255, 255, 255);
 }
-.menu {
-    -fx-text-fill: rgb(94, 94, 94);
-    -fx-font-size: 14px;
+#menuBiblioteca, #menuEditorVideo, #menuAbrir, #menuAcercaDe {
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-background-color: #000000;
 }
-.menu-item {
-    -fx-text-fill: white;
+
+#sliderVolumen {
+    -fx-background-color: #4e4d49;
+}
+
+#sliderVolumen .track {
+    -fx-background-color: #67eeaa; /* Color de la pista del slider */
+}
+
+#sliderVolumen .thumb {
+    -fx-background-color: #67eeaa; /* Color del botón de deslizamiento (thumb) */
 }
 
 /* Título del archivo */
 .label {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF; /* Texto blanco para destacar en fondo oscuro */
+    -fx-text-fill: #000000; /* Texto blanco para destacar en fondo oscuro */
 }
 
 /* Estilos para los botones en el FXML */
@@ -43,6 +54,11 @@
 #editor-video {
     -fx-background-color: #4e4d49; /* Gris claro */
     -fx-border-color: #4e4d49;
+    fx-spacing: 20px; /* Espacio entre los botones */
+}
+
+#editor-video VBox {
+    -fx-spacing: 20px; /* Espacio entre los botones */
 }
 
 #editor-video:hover {
@@ -57,12 +73,12 @@
 }
 
 /* Botones de velocidad */
-#btnAumentarVelocidad, #btnReducirVelocidad {
+#btnAumentarVelocidad, #btnReducirVelocidad, #btnReducirVideo, #btnAmpliarVideo {
     -fx-background-color: #0cc075; /* verde */
     -fx-text-fill: white;
+    fx-spacing: 20px; /* Espacio entre los botones */
     -fx-min-width: 150px;
     -fx-border-radius: 30px; /* Bordes redondeados */
-    -fx-padding: 5px 10px;
     margin-bottom: 100px;
     -fx-font-size: 14px;
 }

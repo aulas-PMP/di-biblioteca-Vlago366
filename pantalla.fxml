@@ -7,22 +7,18 @@
 <VBox xmlns="http://javafx.com/javafx/21.0.5" xmlns:fx="http://javafx.com/fxml/1" prefWidth="1200" prefHeight="600">
     <!-- Menú superior -->
     <children>
-        <MenuBar>
+        <MenuBar fx:id="menuBar">
             <menus>
-                <Menu text="Archivo">
-                    <items>
-                        <MenuItem text="Abrir..." />
-                        <MenuItem text="Salir" />
-                    </items>
+                <Menu text="Archivo" fx:id="menu">
+                    <MenuItem text="Abrir" fx:id="menuAbrir" />
                 </Menu>
-                <Menu text="Biblioteca" />
                 <Menu text="Ver">
-                    <items>
-                        <MenuItem fx:id="menuMinimizar" text="Minimizar Biblioteca/Editor" />
-                        <MenuItem fx:id="menuMaximizar" text="Maximizar Biblioteca/Editor" />
-                    </items>
+                    <MenuItem text="Mostrar/Ocultar Biblioteca" fx:id="menuBiblioteca" />
+                    <MenuItem text="Mostrar/Ocultar Editor de Video" fx:id="menuEditorVideo" />
                 </Menu>
-                <Menu text="Acerca" />
+                <Menu text="Acerca de">
+                    <MenuItem text="Acerca de" fx:id="menuAcercaDe" />
+                </Menu>
             </menus>
         </MenuBar>
 
@@ -33,26 +29,41 @@
         <BorderPane VBox.vgrow="ALWAYS">
             <!-- Panel izquierdo: Editor de vídeo -->
             <left>
-                <VBox prefWidth="250" id="editor-video">
+                <VBox id="editor-video" spacing="20" >
                     <children>
                         <Label text="Editor de Video" alignment="CENTER" />
-                        <Button fx:id="btnAumentarVelocidad" text="➕ Aumentar Velocidad"/>
-                        <Button fx:id="btnReducirVelocidad" text="➖ Reducir Velocidad" />
+                        <Button fx:id="btnAumentarVelocidad" text="Aumentar Velocidad"/>
+                        <Button fx:id="btnReducirVelocidad" text="Reducir Velocidad" />
+                        <Button fx:id="btnAmpliarVideo" text="Aumentar Tamaño"/>
+                        <Button fx:id="btnReducirVideo" text="Minimizar Tamaño"/>
                         <Label text="Volumen" alignment="CENTER" />
                         <Slider fx:id="sliderVolumen" min="0" max="1" value="1" blockIncrement="0.1" />
-                        <!-- Agregado: botón para cerrar o abrir el editor -->
-                        <Button fx:id="btnCerrarEditor" text="▶" />
                     </children>
                 </VBox>
             </left>
+
             <!-- Panel central: Reproductor multimedia -->
             <center>
-                <StackPane id="reproductor-central">
-                    <children>
-                        <!-- Reproductor de video -->
-                        <MediaView fx:id="mediaView" preserveRatio="true" />
-                    </children>
-                </StackPane>
+                <VBox alignment="CENTER" spacing="10">
+                    <!-- Pantalla de reproducción -->
+                    <StackPane fx:id="stackPane" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
+                        <MediaView fx:id="mediaView" preserveRatio="true" StackPane.alignment="CENTER" />
+                    </StackPane>
+
+
+                    <!-- Barra de progreso -->
+                    <Slider fx:id="barraProgreso" min="0" max="1" value="0" VBox.vgrow="NEVER" />
+
+                    <!-- Botones de control -->
+                    <HBox alignment="CENTER" spacing="10">
+                        <Button fx:id="Play" text="Play" />
+                        <Button fx:id="Pause" text="Pause" />
+                        <Button fx:id="Stop" text="Stop" />
+                    </HBox>
+
+                    <!-- Tiempo de reproducción -->
+                    <Label fx:id="tiempoReproduccion" text="0:00 / 0:00" />
+                </VBox>
             </center>
 
             <!-- Panel derecho: Biblioteca -->
@@ -64,19 +75,6 @@
                     </children>
                 </VBox>
             </right>
-
-            <!-- Controles inferiores -->
-            <bottom>
-                <HBox spacing="10" alignment="CENTER" id="controles-inferiores">
-                    <children>
-                        <Button fx:id="Play" text="Play" />
-                        <Button fx:id="Pause" text="Pause" />
-                        <Button fx:id="Stop" text="Stop" />
-                        <Slider fx:id="barraProgreso" min="0" max="1" value="0" HBox.hgrow="ALWAYS" />
-                        <Label fx:id="tiempoReproduccion" text="0:00 / 0:00" />
-                    </children>
-                </HBox>
-            </bottom>
         </BorderPane>
     </children>
 </VBox>
